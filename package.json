@@ -1,0 +1,21 @@
+{
+  "name": "json-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "jsonpath": "^1.1.1",
+    "node-fetch": "^3.3.0",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/jsonpath": "^0.2.0",
+    "@types/node": "^18.0.0",
+    "typescript": "^5.0.0"
+  }
+} 
