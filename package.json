@@ -1,8 +1,11 @@
 {
-  "name": "json-mcp",
-  "version": "1.0.0",
+  "name": "@gongrzhe/server-json-mcp",
+  "version": "1.0.3",
   "type": "module",
   "main": "build/index.js",
+  "bin": {
+    "server-json-mcp": "./build/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w"

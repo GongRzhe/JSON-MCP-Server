@@ -1,142 +1,120 @@
-# JSON Query Service
+# JSON MCP Server (@gongrzhe/server-json-mcp@1.0.3)
 
-A service that provides powerful JSON querying capabilities using JSONPath syntax and additional features.
+A JSON Model Context Protocol (MCP) server implementation for querying and manipulating JSON data. This server enables LLMs to interact with JSON data through a set of standardized tools.
 
-## Features
+## Installation & Usage
 
-### 1. Basic JSONPath Queries
+```bash
+# Using npx with specific version (recommended)
+npx @gongrzhe/server-json-mcp@1.0.3
+
+# Install specific version globally
+npm install -g @gongrzhe/server-json-mcp@1.0.3
+
+# Run after global installation
+server-json-mcp
+```
+
+## Components
+
+### Tools
+
+- **query**
+  - Query JSON data using JSONPath syntax with extended operations
+  - Input:
+    - `url` (string): URL of the JSON data source
+    - `jsonPath` (string): JSONPath expression with optional operations
+
+- **filter**
+  - Filter JSON data using conditions
+  - Input:
+    - `url` (string): URL of the JSON data source
+    - `jsonPath` (string): Base JSONPath expression
+    - `condition` (string): Filter condition
+
+### Supported Operations
+
+#### Array Operations
+- **Slicing**: `$[0:5]`, `$[-3:]`, `$[1:4]`
+- **Sorting**: `$.sort(price)`, `$.sort(-price)`
+- **Distinct**: `$.distinct()`
+- **Transformations**: 
+  - Map: `$.map(fieldName)`
+  - Flatten: `$.flatten()`
+  - Union: `$.union([1,2,3])`
+  - Intersection: `$.intersection([1,2,3])`
+
+#### String Operations
+- **Case**: `$.toLowerCase()`, `$.toUpperCase()`
+- **Tests**: `$.startsWith('test')`, `$.endsWith('test')`
+- **Search**: `$.contains('test')`, `$.matches('pattern')`
+
+#### Numeric Operations
+- **Math**: `$.math(+10)`, `$.pow2()`
+- **Rounding**: `$.round()`, `$.floor()`, `$.ceil()`
+- **Functions**: `$.abs()`, `$.sqrt()`
+
+#### Date Operations
+- **Format**: `$.format('YYYY-MM-DD')`
+- **Check**: `$.isToday()`
+- **Modify**: `$.add(1, 'days')`
+
+#### Aggregation Operations
+- **Group**: `$.groupBy(category)`
+- **Stats**: `$.sum(price)`, `$.avg(price)`, `$.min(price)`, `$.max(price)`
+
+## Configuration
+
+### Usage with Claude Desktop
+
+To use this server with the Claude Desktop app, add the following configuration to your `claude_desktop_config.json`:
+
 ```json
 {
-  "url": "https://api.example.com/data",
-  "jsonPath": "$[0]",              // Get first element
-  "jsonPath": "$[*]",              // Get all elements
-  "jsonPath": "$.fieldName",       // Get specific field
-  "jsonPath": "$[*].fieldName"     // Get field from all elements
+  "json": {
+    "command": "npx",
+    "args": [
+      "@gongrzhe/server-json-mcp@1.0.3"
+    ]
+  }
 }
 ```
 
-### 2. Array Operations
-
-#### Array Slicing
-```json
-{
-  "jsonPath": "$[0:5]",            // Get first 5 elements
-  "jsonPath": "$[-3:]",            // Get last 3 elements
-  "jsonPath": "$[1:4]"             // Get elements from index 1 to 3
-}
-```
-
-#### Array Length
-```json
-{
-  "jsonPath": "$.length()"         // Get array length
-}
-```
-
-### 3. Field Selection
-```json
-{
-  "jsonPath": "$[*].title",                // Select single field
-  "jsonPath": "$[*][title,body]",          // Select multiple fields
-  "jsonPath": "$[0,1,2].title"             // Select field from specific indices
-}
-```
-
-### 4. Filtering
-
-#### Using JSONPath Filter
-```json
-{
-  "jsonPath": "$[?(@.id > 95)]",           // Greater than
-  "jsonPath": "$[?(@.id >= 95)]",          // Greater than or equal
-  "jsonPath": "$[?(@.id < 5)]",            // Less than
-  "jsonPath": "$[?(@.userId == 1)]"        // Equal to
-}
-```
-
-#### Using Filter Tool
-```json
-{
-  "url": "https://api.example.com/data",
-  "jsonPath": "$[*]",
-  "condition": "@.id < 5"                   // Numeric comparison
-}
-```
+Alternatively, you can use the node command directly if you have the package installed:
 
 ```json
 {
-  "jsonPath": "$[*]",
-  "condition": "@.title == 'example'"       // String comparison
+  "json": {
+    "command": "node",
+    "args": [
+      "path/to/build/index.js"
+    ]
+  }
 }
 ```
 
-### 5. Combining Operations
-```json
-{
-  "jsonPath": "$[0:5][?(@.id > 2)]",       // Slice then filter
-  "jsonPath": "$[?(@.userId == 1)].title",  // Filter then select field
-  "jsonPath": "$[-3:][title,body]"         // Get last 3 items with specific fields
-}
-```
+## Development
 
-## Usage
+### Building from Source
 
-### Query Tool
-```json
-{
-  "url": "https://api.example.com/data",
-  "jsonPath": "<your-jsonpath-expression>"
-}
-```
-
-### Filter Tool
-```json
-{
-  "url": "https://api.example.com/data",
-  "jsonPath": "<base-jsonpath>",
-  "condition": "<filter-condition>"
-}
-```
-
-## Examples
-
-1. **Get first 5 posts**
-```json
-{
-  "url": "https://jsonplaceholder.typicode.com/posts",
-  "jsonPath": "$[0:5]"
-}
-```
-
-2. **Get titles of posts by user 1**
-```json
-{
-  "url": "https://jsonplaceholder.typicode.com/posts",
-  "jsonPath": "$[?(@.userId == 1)].title"
-}
-```
-
-3. **Get last 3 posts with specific fields**
-```json
-{
-  "url": "https://jsonplaceholder.typicode.com/posts",
-  "jsonPath": "$[-3:][title,body]"
-}
-```
-
-4. **Filter posts with ID less than 5**
-```json
-{
-  "url": "https://jsonplaceholder.typicode.com/posts",
-  "jsonPath": "$[*]",
-  "condition": "@.id < 5"
-}
-```
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Build the project:
+   ```bash
+   npm run build
+   ```
 
 ## Notes
 
 1. All JSONPath expressions start with `$` representing the root object
 2. Array indices are zero-based
-3. Filter conditions in the filter tool support basic comparison operators (`>`, `>=`, `<`, `<=`, `==`, `!=`)
-4. String values in filter conditions should be wrapped in quotes
-5. The service supports both JSONPath filtering and a separate filter tool for more complex conditions 
+3. String values in operations should be wrapped in quotes
+4. Date operations support 'days', 'months', and 'years' units
+5. Numeric operations support basic arithmetic operators (+, -, *, /)
+
+## License
+
+MIT 
