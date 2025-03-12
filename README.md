@@ -2,6 +2,10 @@
 
 A JSON Model Context Protocol (MCP) server implementation for querying and manipulating JSON data. This server enables LLMs to interact with JSON data through a set of standardized tools.
 
+<a href="https://glama.ai/mcp/servers/9g137c4b4k">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/9g137c4b4k/badge" alt="JSON Server MCP server" />
+</a>
+
 ## Installation & Usage
 
 ```bash
@@ -117,4 +121,4 @@ Alternatively, you can use the node command directly if you have the package ins
 
 ## License
 
-MIT 
+MIT
